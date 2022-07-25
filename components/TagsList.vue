@@ -10,7 +10,7 @@
         <v-icon>mdi-circle-small</v-icon>
       </div>
       <div class="tag__inner">
-        <span class="tag__icon">
+        <span v-if="tag.icon" class="tag__icon">
           <v-icon small>mdi-{{ tag.icon }}</v-icon>
         </span>
         <span class="tag__text">
