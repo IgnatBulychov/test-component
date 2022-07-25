@@ -63,7 +63,7 @@ export default {
     justify-content: space-between;
     .tag {
       &:not(:first-of-type) {
-        flex: 1;
+        flex-grow: 1;
       }
       &__devider {
         flex: 1;

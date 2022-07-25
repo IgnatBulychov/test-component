@@ -1,6 +1,19 @@
 <template>
   <v-app>
     <v-container>
+      <div class="my-5 text-right">
+        <v-btn
+          href="https://github.com/IgnatBulychov/test-component"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mx-2"
+          fab
+          dark
+          small
+        >
+          <v-icon dark> mdi-github </v-icon>
+        </v-btn>
+      </div>
       <div class="my-5 text-center">Examples</div>
       <v-row>
         <v-col cols="12" lg="8">
