@@ -24,7 +24,7 @@
                   <strong>{{ item.title }}</strong>
                 </span>
                 <tags-list :tags="item.tags" :align="item.tagsAlign" />
-                <v-divider v-if="key != items.length - 1" />
+                <v-divider v-if="key != items.length - 1" class="my-2" />
               </div>
             </v-card-text>
           </v-card>
@@ -37,7 +37,7 @@
                   <strong>{{ item.title }}</strong>
                 </span>
                 <tags-list :tags="item.tags" :align="item.tagsAlign" />
-                <v-divider v-if="key != items.length - 1" />
+                <v-divider v-if="key != items.length - 1" class="my-2" />
               </div>
             </v-card-text>
           </v-card>
@@ -150,7 +150,6 @@ export default {
 
 <style lang="scss">
 .item {
-  padding: 8px 0px;
   &__title {
     font-size: 1.1rem;
   }

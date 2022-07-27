@@ -1,11 +1,12 @@
 <template>
   <div
+    ref="tags-wrapper"
     class="tags-list"
     :class="{
       'tags-list_wide': align === 'wide',
     }"
   >
-    <div v-for="(tag, key) in tags" :key="key" class="tag">
+    <div v-for="(tag, key) in tags" :key="key" ref="tags" class="tag">
       <div v-if="key" class="tag__devider">
         <v-icon>mdi-circle-small</v-icon>
       </div>
@@ -34,6 +35,30 @@ export default {
       default: "left",
     },
   },
+  methods: {
+    intersectionObserverCallback(entries, observer) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.visibility = "visible"
+        } else {
+          entry.target.style.visibility = "hidden"
+        }
+      })
+    },
+  },
+  mounted() {
+    const observer = new IntersectionObserver(
+      this.intersectionObserverCallback,
+      {
+        root: this.$refs["tags-wrapper"],
+        rootMargin: "1px",
+        threshold: 1,
+      }
+    )
+    this.$refs.tags.forEach((target) => {
+      observer.observe(target)
+    })
+  },
 }
 </script>
 
@@ -41,13 +66,10 @@ export default {
 .tags-list {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  height: 42px;
   overflow: hidden;
   .tag {
     display: flex;
     align-items: center;
-    height: 42px;
     &__inner {
       white-space: nowrap;
     }
