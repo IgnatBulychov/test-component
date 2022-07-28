@@ -35,19 +35,39 @@ export default {
       default: "left",
     },
   },
+  data: () => ({
+    tagsObserver: null,
+    containerObserver: null,
+    hiddenTags: [],
+  }),
   methods: {
     intersectionObserverCallback(entries, observer) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.style.visibility = "visible"
-        } else {
-          entry.target.style.visibility = "hidden"
+      entries.reverse().forEach((entry) => {
+        if (!entry.isIntersecting) {
+          entry.target.style.display = "none"
+          this.hiddenTags.unshift({
+            el: entry.target,
+            containerWidth:
+              entry.boundingClientRect.left + entry.boundingClientRect.width,
+          })
         }
       })
     },
+    resizeHandler() {
+      if (
+        this.hiddenTags.length &&
+        this.$refs["tags-wrapper"].getBoundingClientRect().width >
+          this.hiddenTags[0].containerWidth
+      ) {
+        const tag = this.hiddenTags.shift()
+        if (tag) {
+          tag.el.style.display = "flex"
+        }
+      }
+    },
   },
   mounted() {
-    const observer = new IntersectionObserver(
+    this.tagsObserver = new IntersectionObserver(
       this.intersectionObserverCallback,
       {
         root: this.$refs["tags-wrapper"],
@@ -55,9 +75,18 @@ export default {
         threshold: 1,
       }
     )
+
+    this.containerObserver = new ResizeObserver(this.resizeHandler)
+
+    this.containerObserver.observe(this.$refs["tags-wrapper"])
+
     this.$refs.tags.forEach((target) => {
-      observer.observe(target)
+      this.tagsObserver.observe(target)
     })
+  },
+  beforeDestroy() {
+    this.tagsObserver.disconnect()
+    this.containerObserver.disconnect()
   },
 }
 </script>
